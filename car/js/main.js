@@ -227,25 +227,17 @@ function init() {
 	objects = new THREE.Group();
 	objects = cars[current_carId];
 	window.addEventListener("resize", onWindowResize, false);
-	effect = new THREE.StereoEffect( renderer );
-				effect.setSize( window.innerWidth, window.innerHeight );
+
 }
 function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
-	//renderer.setSize(window.innerWidth, window.innerHeight);
-	effect.setSize( window.innerWidth, window.innerHeight );
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	
 }
 function render() {
-	//renderer.render(scene, camera);
-	effect.render( scene, camera );
-	if (camera.position.y > 1000) {
-		camera.position.y = 1000
-	} else {
-		if (camera.position.y < 20) {
-			camera.position.y = 20
-		}
-	};
+	renderer.render(scene, camera);
+
 	pointLight.position.copy(camera.position)
 }
 function loadCommonMesh() {
