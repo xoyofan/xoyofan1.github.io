@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Cars </title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	
+		<link rel="stylesheet" href="css/colorpick.css"  type="text/css" />
+		<style>
+			body {
+				font-family: Microsoft Yahei;
+				background-color: #000;
+				color: #fff;
+				font-size: 18px;
+		        text-align: left;
+			    line-height: 33px;
+				margin: 0px;
+				overflow: hidden;
+			}
+			ul{
+				-webkit-padding-start: 0px;
+				-moz-padding-start: 0px;
+				padding-start: 0px;
+			}
+			li {
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				background-color: rgba(0, 127, 127, 0.498039);
+				border: 1px solid rgba(127,255,255,0.25);
+				margin: 5px;
+				padding: 2px;
+				list-style: none;
+			}
+			li:hover {
+				box-shadow: -5px 0px 22px rgba(0,255,255,0.75);
+				border: 1px solid rgba(127,255,255,0.75);
+			}
+
+			.topLeft{
+				position: absolute;
+			    left: 10px;
+				text-align: center;
+				top: 0px ;
+			}
+			.topLeft ul{
+			    width: 220px;
+			    display: none;
+			}
+			.topLeft ul li{
+			    font-size: 14px;
+			    margin: 2px;
+			    padding: 0 0 0 4px;
+			    text-align: left;
+			}
+			.topRight{
+				position: absolute;
+			    right: 0px;
+				text-align: center;
+			}
+			.topRight ul{
+			    width: 220px;
+				margin-top: 0px ;
+				display: none;
+			}
+			
+			#menu{
+			    right:180px;
+			    position: absolute;
+			    transition:transform 0.4s ease-out;
+			    -webkit-transition:transform 0.4s ease-out;
+			    -moz-transition:transform 0.4s ease-out;
+			}
+	
+			
+			.topRight li img{
+				float:right;
+			}
+			.topRight ul ul{
+				width:200px;
+				margin-top: 0px
+			}
+			.topRight ul ul li{
+				display: none;
+			}
+			.topRight ul ul:hover li{
+				display: block;
+			}
+			.minicolors-inline .minicolors-panel{
+				display: none;
+			}
+			#parameter0{
+				display: block;
+			}
+			a{
+				text-decoration:none;
+				color:white;
+			}
+			#cover{
+				width: 100%;
+				height: 100%;
+				vertical-align: center;
+				position: absolute;
+				background: rgba(111,111,111,0.8);
+				z-index: 999;
+			}
+		  #cover span{
+		  	    position: relative;
+		  		left: 40%;
+		  		top:50%;
+		  }
+			@media screen and (orientation:portrait) {
+			    
+			    #cover{
+					display: block;
+				}
+			}
+
+			@media screen and (orientation:landscape) {
+			   
+			    #cover{
+			    	display: none;
+			    }
+
+			}
+		</style>
+		<div id='cover' ><span>you'd better use horizontal screen to watch this</span></div>
+		<div class="topLeft">
+			<li id="showParameter">Details</li>
+
+			<ul id="parameter0">Lancer X Sportback
+				<li >Launched：2011</li>
+				<li >Engine&nbsp&nbsp&nbsp：Ralliart 2.0AT 4WD</li>
+				<li >Max Speed：220 km/h</li>
+				<li >Average Fuel consumption：10.2L/100km</li>
+				<li >Length*Width*Height(mm)：4585*1760*1515</li>
+				<li >Wheelbase(mm) ：&nbsp&nbsp2635</li>
+			</ul>
+			<ul id="parameter1">Audi S3 2.0T 
+				<li >Launched：2014</li>
+				<li >Engine&nbsp&nbsp&nbsp：2.0L</li>
+				<li >Max Speed：250 km/h</li>
+				<li >Average Fuel Consumption：7.3L/100km</li>
+				<li >Length*Width*Height(mm)：4472*1796*1392</li>
+				<li >Wheelbase(mm) ：&nbsp&nbsp2628</li>
+			</ul>
+			<ul id="parameter2">Mercedes-Benz SLR 500
+				<li >Launched：2004</li>
+				<li >Engine&nbsp&nbsp&nbsp：5.4L V8 24V Turbo</li>
+				<li >Max Speed：334 km/h</li>
+				<li >Average Fuel consumption：14.5L/100km</li>
+				<li >Length*Width*Height(mm)：4656*1908*1261</li>
+				<li >Wheelbase(mm) ：&nbsp&nbsp2700</li>
+			</ul>
+		</div>
+		<div class ="topRight" > <img id="menu" src="images/home.png"/>
+			<ul style="top:70px">
+				<li>
+					<ul class="carName">Cars
+						<li id="0" >Mitsubishi Lancer</li>
+						<li id="1" >Audi S3 2.0T</li>
+						<li id="2" >Mercedes-Benz SLR</li>
+					</ul>
+				</li>
+				<li>
+					<ul class="Bkg">Background
+						<li id="road" >Road</li>
+						<li id="Park2" >Grass</li>
+						<li id="Park3Med" >Snow</li>
+						<!--li id="Bridge2" >Bridge</li>
+						<li id="MilkyWay" >dark</li>
+						<li id="skybox" >sky</li-->
+						<li id="SwedishRoyalCastle" >Castle</li>
+						<li id="garage" >garage</li>
+					</ul>
+				</li>
+				<li id="autoRotate"><img src="images/camera.png"/>AutoRotate</li>
+				
+				<li id="bodycolor" class="color" style="background-color:rgba(255,0,0,0.6)">Body Color<img src="images/carColor.png"/>
+					<input type="text" id="carbody" value="#ff0000"  readonly>
+				</li>
+
+				<li id="rimcolor" class="color" style="background-color:rgba(184,184,184,0.6)">Rim Color<img src="images/rimColor.png"/>
+					<input type="text" id="carrim"  value="#b8b8b8"  readonly>
+				</li>
+				<li >
+					<ul class="lang">Language
+						<li ><a href="index.html">Simple Chinese</a></li>
+						<li ><a href="#">English</a></li>
+						
+					</ul>
+					
+				</li>
+
+			</ul>
+			
+		</div>
+		<!--div class ="control"> 
+			<ul >
+				<li id="up" style="bottom:80px;right:80px">上移</li>
+				<li id="down" style="bottom:80px;right:0px">下移</li>
+				<li id="left" style="bottom:40px;right:80px">左移</li>
+				<li id="right" style="bottom:40px;right:0px">右移</li>
+				<li id="zoom0" style="bottom:0px;right:80px">放大</li>
+				<li id="zoom1"style="bottom:0px;right:0px">缩小</li>
+			<ul>
+		</div-->
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "https://hm.baidu.com/hm.js?1e5155e9ddf6c8531f8e42adc6378821";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+			</script>
+
+
+	</head>
+	
+	
+	<body>
+		
+		<script src="js/three82.min.js"></script>
+		<script src="js/BinaryLoader.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		<script src="js/jquery-1.8.3.min.js"></script>
+		<script src="js/JqColorPick.js"></script>
+		<!--script src="js/stats.min.js"></script-->
+		<!--script src="js/FXAAShader.js"></script-->
+		<!--script type="text/javascript" src="js/RSMCE.js"></script-->
+		
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" >
+		setTimeout( function(){$('#cover').css('display','none');},3000);
+		</script>
+
+	</body>
+</html>
