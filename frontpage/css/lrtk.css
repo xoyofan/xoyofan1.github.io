@@ -16,7 +16,7 @@ html,body,form,p,div,h1,h2,h3,h4,h5,h6{-webkit-text-size-adjust:none; font-weigh
 
 .common{margin:0 auto; width:100%; position:relative;}
 
-.common ul li{margin-left:20px;min-width:260px;}
+.common ul li{margin-left:20px;min-width:inherit;}
 
 .clear{clear:both;}
 
@@ -25,15 +25,15 @@ html,body,form,p,div,h1,h2,h3,h4,h5,h6{-webkit-text-size-adjust:none; font-weigh
 .listother {font-size:14px;padding-top:2px;}
 .listother  a{color:#fff;background-color:#ccc;padding:2px;}
 
-.listbox{float:left; margin-bottom:20px; padding:10px; _padding:10px 10px 8px 10px ;background:#f6f6f6; width:260px; height:220px; position:relative;}
+.listbox{float:left; margin-bottom:20px; padding:10px; _padding:10px 10px 8px 10px ;background:#f6f6f6; width:320px; height:220px; position:relative;}
 
-.listimg{float:left; width:260px; height:165px; position:relative; overflow:hidden;}
+.listimg{float:left; width:inherit; height:165px; position:relative; overflow:hidden;}
 
-.listimg img{background:#333; width:260px; height:165px; top:0; left:0; position:absolute;}
+.listimg img{ width:inherit; height:165px; top:0; left:0; position:absolute;}
 
-.summary{width:260px;height:165px;top:165px;left:0;position:absolute;}
+.summary{width:inherit;height:165px;top:165px;left:0;position:absolute;}
 
-.summarytxt{margin:5px 10px;width:250px;height:auto;line-height:22px;font-size:12px;color:#cfcfcf;}
+.summarytxt{margin:5px 10px;width:inherit;height:auto;line-height:22px;font-size:12px;color:#cfcfcf;}
 
 .listinfo{_margin-bottom:3px; padding-left:10px; width:250px; line-height:24px; font-size:12px;}
 
