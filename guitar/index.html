@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>guitar</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				background-color: #fff;
+				margin: 0px;
+				overflow: hidden;
+				font-size:18px;
+				text-align: center;
+				color:#000;
+				font-family: consolas;
+			}
+			#cvgl{
+				position:absolute;
+				left: 2px;
+				width: 100%;
+				height:70%;
+				border: 1px solid #0f0;
+				z-index:0;
+			}
+			#menu{
+				position: absolute;
+				top: 70%;
+				height: 28%;
+				z-index:1;
+				padding: 1px;
+			}
+			
+			
+			#toalPrice{
+				position: absolute;
+				font-size: 20px;
+				color:#f00;
+				margin: 10px;
+				right: 10px;
+				bottom: 10px;
+			}
+
+			.item{
+				width:22%;
+				min-width: 100px;
+				float: left;
+				box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.25);
+			    margin: 2px;
+			}
+			.item span{
+				line-height: 30px;
+				font-weight: bold;
+			}
+			.item .images{
+				padding: 5px;
+			}
+			.item img{
+				width: 40%;
+				box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.75);
+			}
+			.price{
+				text-align: right;
+				right: 20px;
+				color:#0fc;
+			}
+
+			.selected{
+				box-shadow: 1px 2px 4px 1px rgba(255,0,0,0.75);
+			}
+
+			.Texture{
+				width: 30%;
+				max-width: 260px;
+			}
+			.Texture img{
+				width: 25%;
+				
+			}
+			#loading{
+			    font-size:30px;
+			    color:#f00;
+			    position:absolute;
+			    z-index:999;
+			    left:30%;
+			    top:35%;
+			}
+			#move{
+			    top:10px;
+			    right:10px;
+			    color:#fff;
+			    z-index:999;
+			    position:absolute;
+			}
+
+		</style>
+	</head>
+	
+
+	<body>
+	   <div id ="loading">loading......</div>
+	   <div id ="move">mouse left:rotate,middle:zoom,right:move</div>
+		<canvas id="cvgl">you'd better use a browser like chrome , safari,firefox...  </canvas>
+		<div id="menu">
+			<div id = "bodyTexture" class="item Texture"> 
+				<span>body textures</span>
+				<div class ="images">
+					<img class="selected" src = "img/texture-1.jpg"/>
+					<img src = "img/texture-2.jpg"/>
+					<img src = "img/texture-3.jpg"/>
+					<img src = "img/texture-4.jpg"/>
+					<img src = "img/texture-5.jpg"/>
+					<img src = "img/texture-6.jpg"/>
+				</div>
+				<div class="price">+ 200 euro&nbsp;</div>
+			</div>
+			<div id = "body" class="item Model"> 
+				<span>body models</span>
+				<div class ="images">
+					<img class="selected" id = "body" src = "img/body.jpg"/>
+					<img id = "body-1" src = "img/body-1.jpg"/>
+				</div>
+				<div class="price">+ 400 euro&nbsp;</div>
+			</div>
+			<div id = "neck" class="item Model"> 
+				<span>neck models</span>
+				<div class ="images">
+					<img class="selected" id = "neck" src = "img/neck.jpg"/>
+					<img id = "neck-1" src = "img/neck-1.jpg"/>
+				</div>
+				<div class="price">+ 220 euro&nbsp;</div>
+			</div>
+			<div id = "button" class="item Model"> 
+				<span>button models</span>
+				<div class ="images">
+					<img class="selected" id = "button" src = "img/button.jpg"/>
+					<img id = "button-1" src = "img/button-1.jpg"/>
+				</div>
+				<div class="price">+ 50 euro&nbsp;</div>
+			</div>
+
+		</div>
+		<div id="toalPrice">Total Price:1000.0 euro&nbsp;</div>
+		<script src="js/three.min.js"></script>
+		<script src="js/MTLLoader.js"></script>
+		<script src="js/OBJLoader.js"></script>
+		<script src="js/TrackballControls.js"></script>
+		<script src="js/jquery-1.8.0.min.js"></script>
+		<script src ="js/main.js" >	</script>
+		
+	</body>
+</html>
