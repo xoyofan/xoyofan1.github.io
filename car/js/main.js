@@ -137,7 +137,7 @@ function init() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.autoClear = false;
 	document.body.appendChild(renderer.domElement);
-	var _0x13514 = loadEnvironment("cube/cheku/", ".jpg");
+	var _0x13514 = loadEnvironment("cube/road/", ".jpg");
 	materialBkg = new THREE.ShaderMaterial({
 		uniforms: {
 			"tCube": _0x13514
@@ -150,7 +150,7 @@ function init() {
 	_0x13328.load("cube/road/environment.js", function(_0x1360A) {
 		meshBkg = new THREE.Mesh(_0x1360A, materialBkg);
 		scene.add(meshBkg);
-		meshBkg.visible = false
+		meshBkg.visible = true
 	});
 	chekuGroup = new THREE.Group();
 	loadCommonMesh();
@@ -249,7 +249,7 @@ function loadCommonMesh() {
 		map: _0x134C2
 	});
 	_0x132D6.load("carVisual/carvisualizer.garage.js", function(_0x1360A) {
-		var _0x13752 = new THREE.Mesh(_0x1360A, _0x13700);
+		var _0x13752 = new THREE.Mesh(_0x1360A, _0x13700);_0x13752.visible = false;
 		chekuGroup.add(_0x13752)
 	});
 	var _0x134C2 = _0x13566.load("carVisual/images/floor.jpg");
@@ -260,7 +260,7 @@ function loadCommonMesh() {
 		map: _0x134C2
 	});
 	_0x132D6.load("carVisual/carvisualizer.floor.js", function(_0x1360A) {
-		var _0x13752 = new THREE.Mesh(_0x1360A, _0x136AE);
+		var _0x13752 = new THREE.Mesh(_0x1360A, _0x136AE); _0x13752.visible = false;
 		chekuGroup.add(_0x13752)
 	});
 	var _0x134C2 = _0x13566.load("carVisual/images/floorShadow.png");
@@ -270,7 +270,7 @@ function loadCommonMesh() {
 		depthWrite: false
 	});
 	_0x132D6.load("carVisual/carvisualizer.floor_shadow.js", function(_0x1360A) {
-		var _0x13752 = new THREE.Mesh(_0x1360A, _0x1365C);
+		var _0x13752 = new THREE.Mesh(_0x1360A, _0x1365C); _0x13752.visible = false;
 		chekuGroup.add(_0x13752)
 	})
 }
