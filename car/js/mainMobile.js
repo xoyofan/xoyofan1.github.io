@@ -106,20 +106,42 @@ function init() {
 	scene = new THREE.Scene();
 	camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 12000);
 	camera.position.set(76, 364, 688);
-	controls = new THREE.OrbitControls(camera);
-	controls.target.set(0, 50, 0);
-	controls.minDistance = 350;
-	controls.maxDistance = 750;
-	controls.autoRotate = true;
-	controls.enablePan = false;
-	controls.enabledAutoRotatePhi = true;
-	controls.autoRotateSpeed = 2.2;
-	controls.phiRotationSpeed = 2.2;
-	controls.minPolarAngle = THREE.Math.degToRad(70);
-	controls.maxPolarAngle = THREE.Math.degToRad(89);
-	controls.update();
+// 	controls = new THREE.OrbitControls(camera);
+// 	controls.target.set(0, 50, 0);
+// 	controls.minDistance = 350;
+// 	controls.maxDistance = 750;
+// 	controls.autoRotate = true;
+// 	controls.enablePan = false;
+// 	controls.enabledAutoRotatePhi = true;
+// 	controls.autoRotateSpeed = 2.2;
+// 	controls.phiRotationSpeed = 2.2;
+// 	controls.minPolarAngle = THREE.Math.degToRad(70);
+// 	controls.maxPolarAngle = THREE.Math.degToRad(89);
+// 	controls.update();
 	
-
+	function setOrientationControls(e) {
+      if (!e.alpha) {
+        return;
+      }
+      controls = new THREE.DeviceOrientationControls(camera, true);
+      controls.connect();
+      controls.update();
+      element.addEventListener('click', fullscreen, false);
+      window.removeEventListener('deviceorientation', setOrientationControls, true);
+    }
+   // window.addEventListener('deviceorientation', setOrientationControls, true);
+   controls = new THREE.DeviceOrientationControls( camera );
+    function fullscreen() {
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if (container.msRequestFullscreen) {
+        container.msRequestFullscreen();
+      } else if (container.mozRequestFullScreen) {
+        container.mozRequestFullScreen();
+      } else if (container.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+      }
+    }
 
 	var _0x13232 = new THREE.DirectionalLight(0xffffff, 1.0);
 	_0x13232.position.set(0, 1, 0).normalize();
