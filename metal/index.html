@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>金属效果</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a, .button { height:50px;width:80px;color: #f00; font-weight: bold; text-decoration: none; cursor: pointer }
+		</style>
+		<div style="float: right">
+			<button onclick="changeTex1()" class = "button">效果1</button>
+			<button onclick="changeTex2()" class = "button">效果2</button>
+			<button onclick="changeTex3()" class = "button">效果3</button>
+		</div>
+	</head>
+
+	<body>
+		<script src="js/three.min.js"></script>
+		<script src="js/OBJLoader.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		
+		<script>
+
+			var container;
+
+			var camera,  controls, scene, renderer;
+			
+				
+			var mouseX = 0, mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var directionalLight;
+			
+			var metalMap1,metalMap2,metalMap3;
+			var metalMat ;
+		
+			
+			
+			init();
+			animate();
+			
+			function initCamera(){
+				
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.set(0,30,30);
+				
+				//cameraFront = cameraBack = camera.clone();
+			
+			}
+			function initScene(){
+				
+				scene = new THREE.Scene();
+				
+				
+				initLight(scene);
+			}
+			function initLight(_scene){
+			
+				var ambient = new THREE.AmbientLight( 0x222222 );
+				_scene.add( ambient );
+
+				//directionalLight = new THREE.DirectionalLight( 0xffffff );
+				//directionalLight.position.set( 0, 0, 1 ).normalize();
+				//_scene.add( directionalLight );
+
+				
+				this.addPointLight = function(_x,_y,_z){
+					var _light = new THREE.PointLight(0x888888,0.7);
+					//var _light = new THREE.PointLight(0xffffff,1.0);
+					_light.position.set(_x,_y,_z);
+					_scene.add(_light)
+				}
+				
+				addPointLight(0,-400,0);
+				addPointLight(0,400,0);
+				addPointLight(0,0,400);
+				addPointLight(0,0,-400);
+				
+			}
+			function initControl(_camera){
+				
+				var _controls = new THREE.OrbitControls( _camera, renderer.domElement );
+				//controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
+				_controls.enableDamping = true;
+				_controls.dampingFactor = 0.25;
+			//	controls.enableZoom = false;
+				
+				return _controls;
+
+			}
+
+			function changeTex1(){
+				metalMat.envMap = metalMap1;
+				metalMat.update();
+			}
+			function changeTex2(){
+				metalMat.envMap = metalMap2;
+				metalMat.update();
+			}
+			function changeTex3(){
+				metalMat.envMap = metalMap3;
+				metalMat.update();
+			}
+		
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				initCamera();
+				
+				initScene();
+			
+			
+				
+				renderer = new THREE.WebGLRenderer({antialias:true});
+				renderer.setPixelRatio( window.devicePixelRatio );
+				//renderer.setClearColor('#888888');
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				//renderer.gammaInput = true;
+				renderer.gammaOutput = true;
+			//	renderer.physicallyCorrectLights = true;
+				renderer.gammaFactor = 2.0;
+				//renderer.toneMapping = THREE.ReinhardToneMapping;
+			 	//renderer.toneMappingExposure = Math.pow( 1.1, 4.0 );
+				container.appendChild( renderer.domElement );
+
+				controls = initControl(camera);
+				//initControl(controlsFront,cameraFront);
+				//initControl(controlsBack,cameraBack);
+				
+			
+				
+				metalMap1 = loadTexture('textures/print_imat_gold_white.png') ;
+				metalMap2 = loadTexture('textures/silver.png') ;
+				metalMap3 = loadTexture('textures/metal.jpg') ;
+
+				 metalMat = new THREE.MeshBasicMaterial({
+					color:new THREE.Color().setStyle('rgb(255,255,255)'),//shininess:154,specular:0xffffff,
+					envMap:metalMap1,
+					reflectivity:1.0,
+					shading:THREE.SmoothShading
+					//normalMap:texNormal
+				});
+			
+				
+				
+			
+		
+				
+				// model
+
+				//var mtlLoader = new THREE.MTLLoader();
+				var objLoader = new THREE.OBJLoader();
+				
+				var srcUrl = 'obj/yiliao/';
+				objLoader.setPath( srcUrl);
+				
+
+				objLoader.load( 'yiliao.obj', function ( object ) {
+					object.children.forEach(function(child){
+						
+
+						child.material = metalMat;
+					
+					});	
+
+					scene.add(object);
+				} );
+
+				
+			
+				
+				
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function loadTexture(url){
+
+				var _metalMap = new THREE.TextureLoader().load(url);
+				_metalMap.mapping = THREE.SphericalReflectionMapping;
+
+				return _metalMap;
+
+			}
+		
+			function animate() {
+
+				controls.update();
+			
+				requestAnimationFrame( animate );
+				render();
+			
+			}
+
+			function render() {
+
+				
+				renderer.render(scene ,camera);
+			
+	
+			}
+			
+			
+		
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function onDocumentMouseMove( event ) {
+
+				mouseX = ( event.clientX - windowHalfX ) / 2;
+				mouseY = ( event.clientY - windowHalfY ) / 2;
+
+			}
+
+			//
+
+		
+
+		
+
+		</script>
+
+	</body>
+</html>
