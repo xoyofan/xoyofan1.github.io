@@ -35,6 +35,7 @@
 
 		<script src="balvo/starsPos.js"></script>
 
+		<script src="js/libs/stats.min.js"></script>
 						
 		<script src="js/shaders/CopyShader.js"></script>
 		
@@ -62,7 +63,7 @@
 		
 		<script>
 
-			var container;
+			var container, stats;
 
 			var camera,  controls, scene, renderer;
 			var sceneFront,sceneBack;
@@ -83,6 +84,7 @@
 			
 			var sceneMetalDepth,sceneDiamDepth,rtDiamDepth,rtMetalDepth;
 			
+			var stats;
 			var sparkGroup  ;
 			
 			var composer,composer_Base,composer_Front,composer_Back;
@@ -122,7 +124,7 @@
 
 				
 				this.addPointLight = function(_x,_y,_z){
-					var _light = new THREE.PointLight(0x888888,0.7);
+					var _light = new THREE.PointLight(0xffffff,1.0);
 					//var _light = new THREE.PointLight(0xffffff,1.0);
 					_light.position.set(_x,_y,_z);
 					_scene.add(_light)
@@ -149,9 +151,9 @@
 				return new THREE.MeshPhongMaterial({
 					color:_color,
 					side:_side,
-					specular:0x888888,
+					specular:0xffffff,
 					shininess:154,
-					reflectivity:1.0,
+					reflectivity:0.8,
 					shading:THREE.FlatShading,
 					combine:THREE.MultiplyOperation,
 					transparent:true,opacity:_opacity,
@@ -185,14 +187,16 @@
 				
 				initScene();
 			
-			
 				
-				renderer = new THREE.WebGLRenderer({antialias:true});
+				stats = new Stats();
+				container.appendChild( stats.dom );
+				
+				renderer = new THREE.WebGLRenderer({});
 				renderer.setPixelRatio( window.devicePixelRatio );
 				//renderer.setClearColor('#888888');
 				renderer.setSize( window.innerWidth, window.innerHeight );
 			//	renderer.gammaInput = true;
-				renderer.gammaOutput = true;
+			//	renderer.gammaOutput = true;
 			//	renderer.physicallyCorrectLights = true;
 				renderer.gammaFactor = 2.2;
 				//renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -233,7 +237,7 @@
 				var gemMapBack = cubeMapCross('balvo/images/29_Bavlo_Main_GemAddReflectTexture.png',128);
 			
 				var metalMat = new THREE.MeshBasicMaterial({
-					color:new THREE.Color().setStyle('rgb(128,128,128)'),//shininess:154,specular:0xffffff,
+					color:new THREE.Color().setStyle('rgb(255,255,255)'),//shininess:154,specular:0xffffff,
 					envMap:metalMap,
 					reflectivity:1.0,
 					shading:THREE.SmoothShading
@@ -245,10 +249,10 @@
 				var blackMat = new THREE.MeshBasicMaterial({color:0x000000});
 				
 				gemFront = initMaterial( new THREE.Color().setStyle('rgb(255,255,255)'),THREE.FrontSide,gemMap);
-				gemBack = initMaterial( new THREE.Color().setStyle('rgb(255,255,255)'),THREE.BackSide,gemMapBack,1.0);
+				gemBack = initMaterial( new THREE.Color().setStyle('rgb(255,255,255)'),THREE.BackSide,gemMapBack,0.5);
 
 				gemFrontM = initMaterial( new THREE.Color().setStyle('rgb(178,157,51)'),THREE.FrontSide,gemMap);
-				gemBackM = initMaterial( new THREE.Color().setStyle('rgb(178,157,51)'),THREE.BackSide,gemMapBack,1.0);
+				gemBackM = initMaterial( new THREE.Color().setStyle('rgb(178,157,51)'),THREE.BackSide,gemMapBack,0.5);
 
 				rtFront = setupRenderTarget();
 				rtBack = rtFront.clone();
@@ -258,7 +262,7 @@
 				
 			//
 				composer_Base = new THREE.EffectComposer(renderer);
-				var blend2 = createMixTexture(rtBack.texture,rtFront.texture);	
+				var blend2 = createMixTexture(rtBack.texture,rtFront.texture,0.5);	
 				composer_Base.addPass(blend2);
 				//var bloomPass = new THREE.BloomPass(2.1,3,11,1024);
 				var  bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight),0.5, 0.05, 0.75);//1.0, 9, 0.5, 512);
@@ -563,12 +567,14 @@
 			//
 
 			function animate() {
+				stats.begin();
 				
 				controls.update();
 				requestAnimationFrame( animate );
 				
 				render();
 				
+				stats.end();
 			}
 
 		
