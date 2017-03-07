@@ -35,7 +35,6 @@
 
 		<script src="balvo/starsPos.js"></script>
 
-		<script src="js/libs/stats.min.js"></script>
 						
 		<script src="js/shaders/CopyShader.js"></script>
 		
@@ -63,7 +62,7 @@
 		
 		<script>
 
-			var container, stats;
+			var container;
 
 			var camera,  controls, scene, renderer;
 			var sceneFront,sceneBack;
@@ -84,7 +83,6 @@
 			
 			var sceneMetalDepth,sceneDiamDepth,rtDiamDepth,rtMetalDepth;
 			
-			var stats;
 			var sparkGroup  ;
 			
 			var composer,composer_Base,composer_Front,composer_Back;
@@ -187,9 +185,7 @@
 				
 				initScene();
 			
-				
-				stats = new Stats();
-				container.appendChild( stats.dom );
+			
 				
 				renderer = new THREE.WebGLRenderer({antialias:true});
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -567,14 +563,12 @@
 			//
 
 			function animate() {
-				stats.begin();
 				
 				controls.update();
 				requestAnimationFrame( animate );
 				
 				render();
 				
-				stats.end();
 			}
 
 		
