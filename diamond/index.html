@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>diamond</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+		</style>
+		
+		
+	</head>
+
+	<body>
+		<script src="../build/three.min.js"></script>
+		<script src="js/loaders/MTLLoader.js"></script>
+		<script src="js/loaders/OBJLoader.js"></script>
+		<script src="js/controls/OrbitControls.js"></script>
+
+		<script src="js/Detector.js"></script>
+		<script src="js/libs/stats.min.js"></script>
+		<script src="balvo/starsPos.js"></script>
+
+		<script src="js/libs/stats.min.js"></script>
+						
+		<script src="js/shaders/CopyShader.js"></script>
+		
+		<script src="js/shaders/BlendShader2.js"></script>
+		<script src="js/shaders/BlendShader.js"></script>
+		<script src="js/shaders/BlendDepth.js"></script>
+		<script src="js/shaders/FXAAShader.js"></script>
+		
+		<script src="js/shaders/ConvolutionShader.js"></script>
+
+		<script src="js/postprocessing/EffectComposer.js"></script>
+		<script src="js/postprocessing/RenderPass.js"></script>
+		<script src="js/postprocessing/MaskPass.js"></script>
+		<script src="js/postprocessing/ShaderPass.js"></script>
+		<script src="js/postprocessing/TexturePass.js"></script>
+		<script src="js/postprocessing/BloomPass.js"></script>
+		<script src="js/postprocessing/SavePass.js"></script>
+		
+		<script src="js/shaders/ConvolutionShader.js"></script>
+		<script src="js/shaders/LuminosityHighPassShader.js"></script>
+		<script src="js/postprocessing/UnrealBloomPass.js"></script>
+		
+		
+		
+		
+		<script>
+
+			var container, stats;
+
+			var camera,  controls, scene, renderer;
+			var sceneFront,sceneBack;
+
+			    var  sceneTopDepth,rtTopDepth;
+			    var  sceneBotDepth,rtBotDepth;
+				
+			var mouseX = 0, mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var directionalLight;
+			
+			var gemFront,gemBack;
+			var gemFrontM,gemBackM;
+			var rtFront,rtBack,rtBase;
+			
+			var sceneMetalDepth,sceneDiamDepth,rtDiamDepth,rtMetalDepth;
+			
+			var stats;
+			var sparkGroup  ;
+			
+			var composer,composer_Base,composer_Front,composer_Back;
+			
+			init();
+			animate();
+			
+			function initCamera(){
+				
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+				camera.position.z = 100;
+				
+				//cameraFront = cameraBack = camera.clone();
+			
+			}
+			function initScene(){
+				
+				scene = new THREE.Scene();
+				sceneTopDepth = scene.clone();
+				sceneBotDepth = scene.clone();
+				initLight(scene);
+				sceneFront  = scene.clone();
+				sceneBack  = scene.clone();
+				//initLight(scene);
+				///initLight(sceneFront);
+				//initLight(sceneBack);
+				
+			}
+			function initLight(_scene){
+			
+				var ambient = new THREE.AmbientLight( 0x222222 );
+				_scene.add( ambient );
+
+				//directionalLight = new THREE.DirectionalLight( 0xffffff );
+				//directionalLight.position.set( 0, 0, 1 ).normalize();
+				//_scene.add( directionalLight );
+
+				
+				this.addPointLight = function(_x,_y,_z){
+					var _light = new THREE.PointLight(0x888888,0.7);
+					//var _light = new THREE.PointLight(0xffffff,1.0);
+					_light.position.set(_x,_y,_z);
+					_scene.add(_light)
+				}
+				
+				addPointLight(0,-400,0);
+				addPointLight(0,400,0);
+				addPointLight(0,0,400);
+				addPointLight(0,0,-400);
+				
+			}
+			function initControl(_camera){
+				
+				var _controls = new THREE.OrbitControls( _camera, renderer.domElement );
+				//controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
+				_controls.enableDamping = true;
+				_controls.dampingFactor = 0.25;
+			//	controls.enableZoom = false;
+				
+				return _controls;
+
+			}
+			function initMaterial(_color,_side,_envmap,_opacity = 1.0,_depthWrite = false){
+				return new THREE.MeshPhongMaterial({
+					color:_color,
+					side:_side,
+					specular:0x888888,
+					shininess:154,
+					reflectivity:1.0,
+					shading:THREE.FlatShading,
+					combine:THREE.MultiplyOperation,
+					transparent:true,opacity:_opacity,
+					envMap:_envmap,
+					depthWrite: _depthWrite
+					//premultipliedAlpha:true
+				});
+
+			
+			}
+			function initSpark(){
+			
+				var spriteMap = new THREE.TextureLoader().load('balvo/images/31_Bavlo_Main_SparkleAlphaTexture.png');
+				var spriteMaterial = new THREE.SpriteMaterial({
+					map:spriteMap,
+					depthWrite:false,
+					depthTest:false,
+					color:0xffffff
+				});
+				
+				return new THREE.Sprite(spriteMaterial);
+			}
+			
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+			
+				initCamera();
+				
+				initScene();
+			
+				
+				stats = new Stats();
+				container.appendChild( stats.dom );
+				
+				renderer = new THREE.WebGLRenderer({antialias:true});
+				renderer.setPixelRatio( window.devicePixelRatio );
+				//renderer.setClearColor('#888888');
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			//	renderer.gammaInput = true;
+				renderer.gammaOutput = true;
+			//	renderer.physicallyCorrectLights = true;
+				renderer.gammaFactor = 2.2;
+				//renderer.toneMapping = THREE.ReinhardToneMapping;
+			// 	renderer.toneMappingExposure = Math.pow( 1.1, 4.0 );
+			 	renderer.autoClear = false;
+				container.appendChild( renderer.domElement );
+
+				controls = initControl(camera);
+				//initControl(controlsFront,cameraFront);
+				//initControl(controlsBack,cameraBack);
+				
+				//spark
+			///*	
+				sparkGroup = new THREE.Group();
+				
+				generateNewSpark();
+				generateNewSpark();
+				sparkGroup.rotateX(-Math.PI/2);
+				sceneFront.add(sparkGroup);
+				sceneBack.add(sparkGroup);
+			//*/	
+
+				var path = "textures/cube/bavlo/";
+				var format = '.png';
+				var urls = [
+						path + 'px' + format, path + 'nx' + format,
+						path + 'py' + format, path + 'ny' + format,
+						path + 'pz' + format, path + 'nz' +  format
+					];
+
+				
+				//var metalMap = new THREE.CubeTextureLoader().load( urls );metalMap.format = THREE.RGBFormat;
+				var metalMap = cubeMapCross('balvo/images/26_Bavlo_Main_MetalReflectTexture.jpg',128);
+
+
+				var texNormal = new THREE.TextureLoader().load('balvo/images/32_Bavlo_Main_SandblastTexture.png');
+				var gemMap = cubeMapCross('balvo/images/25_Bavlo_Main_GemReflectTexture.png',128);
+				var gemMapBack = cubeMapCross('balvo/images/29_Bavlo_Main_GemAddReflectTexture.png',128);
+			
+				var metalMat = new THREE.MeshBasicMaterial({
+					color:new THREE.Color().setStyle('rgb(128,128,128)'),//shininess:154,specular:0xffffff,
+					envMap:metalMap,
+					reflectivity:1.0,
+					shading:THREE.SmoothShading
+					//normalMap:texNormal
+				});
+				
+				var depthMat = new THREE.MeshDepthMaterial({side:THREE.FrontSide,depthPacking:THREE.RGBADepthPacking});//,depthPacking:THREE.RGBADepthPacking
+				
+				var blackMat = new THREE.MeshBasicMaterial({color:0x000000});
+				
+				gemFront = initMaterial( new THREE.Color().setStyle('rgb(255,255,255)'),THREE.FrontSide,gemMap);
+				gemBack = initMaterial( new THREE.Color().setStyle('rgb(255,255,255)'),THREE.BackSide,gemMapBack,1.0);
+
+				gemFrontM = initMaterial( new THREE.Color().setStyle('rgb(178,157,51)'),THREE.FrontSide,gemMap);
+				gemBackM = initMaterial( new THREE.Color().setStyle('rgb(178,157,51)'),THREE.BackSide,gemMapBack,1.0);
+
+				rtFront = setupRenderTarget();
+				rtBack = rtFront.clone();
+				rtTopDepth = rtFront.clone();
+				rtBotDepth = rtFront.clone();
+				rtBase = setupRenderTarget();
+				
+			//
+				composer_Base = new THREE.EffectComposer(renderer);
+				var blend2 = createMixTexture(rtBack.texture,rtFront.texture);	
+				composer_Base.addPass(blend2);
+				//var bloomPass = new THREE.BloomPass(2.1,3,11,1024);
+				var  bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight),0.5, 0.05, 0.75);//1.0, 9, 0.5, 512);
+				composer_Base.addPass(bloomPass);
+				//composer_Base.renderToScreen = true;
+
+				composer = new THREE.EffectComposer(renderer);
+				
+				effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+				effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight );
+				//composer.addPass(effectFXAA);
+				
+			//	var blend = createAddTexture(composer_Base.renderTarget2.texture,rtBase.texture);
+			//		var blend = new THREE.TexturePass(rtBotDepth.texture);
+			//		var blend = createMixTexture(rtFront.texture,rtBack.texture);
+			///*
+				var blend = new THREE.ShaderPass(THREE.BlendDepth);
+					blend.uniforms['tDiffuse1'].value = composer_Base.renderTarget2.texture;
+					blend.uniforms['tDepth1'].value = rtTopDepth.texture;//rtTopDepth.texture;rtFront.depthTexture//
+					blend.uniforms['tDiffuse2'].value = rtBase.texture;
+					blend.uniforms['tDepth2'].value = rtBotDepth.texture;
+					blend.uniforms['cameraNear'].value = camera.near;
+					blend.uniforms['cameraFar'].value = camera.far;
+				
+				
+			//*/	
+				
+				composer.addPass(blend);
+				
+				
+				
+				
+				//var copyShader = new THREE.ShaderPass(THREE.CopyShader);
+				blend.renderToScreen = true;
+				//composer.addPass(copyShader);
+				//blend.renderToScreen = true;
+				
+				// model
+			
+				
+				
+				var mtlLoader = new THREE.MTLLoader();
+				var objLoader = new THREE.OBJLoader();
+		
+				var srcUrl = 'balvo/R&H00306/';
+				mtlLoader.setPath( srcUrl );
+				objLoader.setPath( srcUrl);
+					
+				var objFront = [];
+				var objBack = [];
+				objLoader.load( 'svpFile.obj', function ( object ) {
+					
+					object.traverse( function ( child ) {
+						if ( child instanceof THREE.Mesh ) {
+							child.rotateX(-Math.PI/2);
+							var _matName = child.name;
+							
+							;
+							if(_matName == 'gold'){
+								
+								//var metal = child.clone();
+								child.material = metalMat;
+								scene.add(child);
+
+								var bo = child.clone();
+								 	bo.material = depthMat;
+									sceneBotDepth.add(bo);
+							
+							}else{ 
+								
+								//child.material = blackMat;
+							//	var parentF = new THREE.Group();
+							//var parentB = new THREE.Group();
+							
+								var front = child.clone();
+								var back = child.clone();
+									
+								sceneFront.add(front);
+								sceneBack.add(back);
+
+								var de = child.clone();
+								 	de.material = depthMat;
+									sceneTopDepth.add(de);
+									
+								if(_matName == 'Diamond'){
+									
+									front.material = gemFront;
+								 	back.material = gemBack;
+
+								 	
+
+									
+								}else{	
+								
+									front.material = gemFrontM;
+									back.material = gemBackM;
+								}
+								
+							}
+						}
+					} );
+					
+					
+					
+				} );
+				
+				
+
+				//controlVisible();
+				//console.log(_config['gemParts']);
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+			
+			
+			
+			function render() {
+
+
+				renderer.clear();
+				//directionalLight.position.copy(camera.position);
+				//console.log(camera.position);
+				//renderer.setClearColor('#000000');
+		    	//renderer.clearTarget(rtBack, true, true);
+				renderer.render(scene ,camera,rtBase ,true);
+				
+				renderer.render(sceneBack ,camera,rtBack ,true);
+				
+				renderer.render(sceneFront,camera,rtFront,true);	
+				renderer.render(sceneTopDepth,camera,rtTopDepth,true);
+				renderer.render(sceneBotDepth,camera,rtBotDepth,true);
+			
+				composer_Base.render();
+				
+				controlVisible(0.1);
+				
+				composer.render();
+				
+				//renderer.render(scene,camera);
+	
+			}
+			
+			function controlVisible(_angle){
+			
+				sparkGroup.children.forEach(function(child){
+					
+					var _camDir = new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z).normalize() ;
+					var _objDir = new THREE.Vector3(child.position.x,child.position.y,child.position.z).normalize() ;
+					//console.log(_camDir);
+					//console.log(_camDir.dot(_objDir));
+					var _value = _camDir.dot(_objDir);
+					//child.opacity -= _value> 0.0 && _value < _angle *180 /Math.PI ? 0.06 :false;
+				/*	var _opacity = child.material.opacity;
+					if(_value> 0.0 && _value < _angle *180 /Math.PI){
+						if(child.material.opacity >= 0){
+							child.material.opacity = 1.0
+						}else{ child.material.opacity = 1.0;}
+					}else{ _opacity = 0.0; }*/
+					
+					child.visible = Math.abs( _value ) < _angle ? true : false;
+					
+					
+					
+				//	child.position.x += (Math.random()-0.5)*1;
+				//	child.position.z += (Math.random()-0.5)*1;
+				});
+			}
+			
+			
+			function generateNewSpark(){
+			
+				var spark = initSpark();
+				
+				var items = _config['gemParts'];
+				for(var i  = 0 ;i< items.length;i++){
+					
+					var radius = items[i].radius;
+					var newSpark = spark.clone();
+					var radio = items[i].gemstoneFlag >0 ? 1/radius : 4/radius;
+					var s =(2+ Math.random())*radio ;
+					newSpark.scale.set(s,s,s);
+					
+					newSpark.position.set(
+						items[i].center.x+(Math.random()-0.5)*items[i].radius,
+						items[i].center.y+(Math.random()-0.5)*items[i].radius,
+						items[i].center.z+(Math.random()-0.5)*items[i].radius  
+					/*	items[i].center.x,
+						items[i].center.y,
+						items[i].center.z*/
+					);
+					sparkGroup.add(newSpark);
+				}
+				
+				
+				
+			}
+			
+			
+			function createMixTexture(_tex1,_tex2,_ratio = 0.5){
+				var blend = new THREE.ShaderPass(THREE.BlendShader);
+				
+				blend.uniforms["opacity"].value = 1.0;
+				blend.uniforms["mixRatio"].value = _ratio;
+				blend.uniforms["tDiffuse1"].value = _tex1;
+				blend.uniforms["tDiffuse2"].value = _tex2;
+				return blend;
+			}
+			
+			function createAddTexture(_tex1,_tex2,_tex3){
+				var blend = new THREE.ShaderPass(THREE.BlendShader2);
+			
+				blend.uniforms["tDiffuse1"].value = _tex1;
+				blend.uniforms["tDiffuse2"].value = _tex2;
+			
+				return blend;
+			}
+			
+			function flipNormal(mesh){
+
+				//mesh.flipSided = true;
+
+				var _normals = mesh.geometry.attributes.normal;
+				//console.log(_normals);
+				for(var i=0;i<_normals.array.length;i++){
+					_normals.array[i] *= -1.0 ;
+
+				}
+				//console.log(_normals);
+				mesh.geometry.normalsNeedUpdate = true;
+				
+				
+			}
+
+			
+			function setupRenderTarget(bDepth = true){
+				var PixelRatio = renderer.getPixelRatio();
+				var w = Math.floor(renderer.context.canvas.width / PixelRatio ) || 1;
+				var h = Math.floor(renderer.context.canvas.height / PixelRatio ) || 1;
+
+				var param = {
+					minFilter:THREE.NearestFilter,
+					magFilter:THREE.NearestFilter,
+					format:THREE.RGBAFormat,
+					generateMipmaps : false,
+					stencilBuffer : false
+				};
+				if(bDepth){
+					param.depthBuffer =  true;
+					param.depthTexture = new THREE.DepthTexture();
+					param.depthTexture.type = THREE.UnsignedShortType;
+				}
+				var renderTarget = new THREE.WebGLRenderTarget(w,h,param);
+				return renderTarget;
+			}
+			
+			function cubeMapCross(_url,size,mapping){
+				var cubeMap = new THREE.CubeTexture( [] );
+				cubeMap.format = THREE.RGBFormat;
+
+				var loader = new THREE.ImageLoader();
+				loader.load( _url, function ( image ) {
+					var getSide = function ( x, y ) {				
+						var canvas = document.createElement( 'canvas' );
+						canvas.width = size;
+						canvas.height = size;
+						var context = canvas.getContext( '2d' );
+						context.drawImage( image, - x * size, - y * size );
+						return canvas;
+					};
+					cubeMap.images[ 0 ] = getSide( 2, 1 ); // px
+					cubeMap.images[ 1 ] = getSide( 0, 1 ); // nx
+					cubeMap.images[ 2 ] = getSide( 1, 0 ); // py
+					cubeMap.images[ 3 ] = getSide( 1, 2 ); // ny
+					cubeMap.images[ 4 ] = getSide( 1, 1 ); // pz
+					cubeMap.images[ 5 ] = getSide( 1, 3 ); // nz
+					cubeMap.needsUpdate = true;
+				} );
+				cubeMap.mapping = mapping? THREE.CubeRefractionMapping:THREE.CubeReflectionMapping;
+				return cubeMap;
+			}
+			function onWindowResize() {
+
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function onDocumentMouseMove( event ) {
+
+				mouseX = ( event.clientX - windowHalfX ) / 2;
+				mouseY = ( event.clientY - windowHalfY ) / 2;
+
+			}
+
+			//
+
+			function animate() {
+				stats.begin();
+				
+				controls.update();
+				requestAnimationFrame( animate );
+				
+				render();
+				
+				stats.end();
+			}
+
+		
+
+		</script>
+
+	</body>
+</html>
