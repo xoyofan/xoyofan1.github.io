@@ -184,7 +184,7 @@ function init() {
 	});
 	mat_body = new THREE.MeshPhongMaterial({
 		color: 0xff0000,
-		reflectivity: 0.2,
+		reflectivity: 0.4,
 		combine: THREE.MixOperation,
 		envMap: _0x13514,
 		shininess: 30
