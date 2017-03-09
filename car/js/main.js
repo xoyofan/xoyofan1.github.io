@@ -184,10 +184,10 @@ function init() {
 	});
 	mat_body = new THREE.MeshPhongMaterial({
 		color: 0xff0000,
-		reflectivity: 0.6,
-		combine: THREE.MixOperation,
+		reflectivity: 0.2,
+		//combine: THREE.MixOperation,
 		envMap: _0x13514,
-		shininess: 60
+		shininess: 30
 	});
 	mat_glass = new THREE.MeshLambertMaterial({
 		color: 0xcccccc,
