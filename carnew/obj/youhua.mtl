@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# 创建的文件:10.03.2017 12:37:27
+# 麓麓陆篓碌脛脦脛录艧:10.03.2017 12:37:27
 
 newmtl _1orig_Material__661
 	Ns 30.0000
@@ -12,10 +12,7 @@ newmtl _1orig_Material__661
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.2160 0.2160 0.2160
 	Ke 0.0000 0.0000 0.0000
-	map_Ka GTR_inside.png
-	map_Kd GTR_inside.png
-	map_bump Map__91.png
-	bump Map__91.png
+	
 
 newmtl _117___Default
 	Ns 20.0000
@@ -28,9 +25,7 @@ newmtl _117___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.3600 0.3600 0.3600
 	Ke 0.0000 0.0000 0.0000
-	map_Ka GTR_body.png
-	map_Kd GTR_body.png
-	map_refl 92581108.png
+
 
 newmtl _117___Default22
 	Ns 30.0000
@@ -43,8 +38,7 @@ newmtl _117___Default22
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.3600 0.3600 0.3600
 	Ke 0.0000 0.0000 0.0000
-	map_Ka GTR_body.png
-	map_Kd GTR_body.png
+	
 
 newmtl _117___Defaultww
 	Ns 20.0000
@@ -57,8 +51,7 @@ newmtl _117___Defaultww
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.3600 0.3600 0.3600
 	Ke 0.0000 0.0000 0.0000
-	map_Ka gtr_02_01.png
-	map_Kd gtr_02_01.png
+
 
 newmtl _1gtr_02_01
 	Ns 10.0000
@@ -71,8 +64,7 @@ newmtl _1gtr_02_01
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka gtr_02_01.png
-	map_Kd gtr_02_01.png
+
 
 newmtl _104___Default
 	Ns 21.0000
@@ -97,8 +89,6 @@ newmtl _1Material__516
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka GTR_wheel.png
-	map_Kd GTR_wheel.png
 
 newmtl _1gtr_04_01ss
 	Ns 35.0000
@@ -135,10 +125,7 @@ newmtl _1Material__689
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka GTR_wheel.png
-	map_Kd GTR_wheel.png
-	map_bump Map__86.png
-	bump Map__86.png
+
 
 newmtl _1Material__545
 	Ns 10.0000
@@ -151,8 +138,7 @@ newmtl _1Material__545
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka GTR_wheel.png
-	map_Kd GTR_wheel.png
+
 
 newmtl _101___Default
 	Ns 31.0000
