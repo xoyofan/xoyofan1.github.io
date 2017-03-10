@@ -166,20 +166,20 @@
 				var reflectionCube = new THREE.CubeTextureLoader().load( urls );
 				reflectionCube.format = THREE.RGBFormat;
 
-			//	var materialBkg = new THREE.ShaderMaterial( {
+				var materialBkg = new THREE.ShaderMaterial( {
 
-				// 	uniforms: {"tCube": reflectionCube},
-				// 	vertexShader: 'varying vec2 outUV;void main(){outUV=uv;vec4 mvPosition = modelViewMatrix*vec4(position,1.0 );gl_Position = projectionMatrix * mvPosition;}',
-				// 	fragmentShader:'uniform samplerCube tCube;varying vec2 outUV;vec4 cubeToLatLon(samplerCube cubemap, vec2 inUV){const float PI = 3.141592653589793238462643383;vec3 cubmapTexCoords;cubmapTexCoords.x = -cos(inUV.x * PI * 2.0) * sin(inUV.y * PI);cubmapTexCoords.y = -cos(inUV.y * PI);cubmapTexCoords.z = -sin(inUV.x * PI * 2.0) * sin(inUV.y * PI);return textureCube(cubemap, cubmapTexCoords);}void main( void ){gl_FragColor = cubeToLatLon(tCube, outUV);}'
+					uniforms: {"tCube": reflectionCube},
+					vertexShader: 'varying vec2 outUV;void main(){outUV=uv;vec4 mvPosition = modelViewMatrix*vec4(position,1.0 );gl_Position = projectionMatrix * mvPosition;}',
+					fragmentShader:'uniform samplerCube tCube;varying vec2 outUV;vec4 cubeToLatLon(samplerCube cubemap, vec2 inUV){const float PI = 3.141592653589793238462643383;vec3 cubmapTexCoords;cubmapTexCoords.x = -cos(inUV.x * PI * 2.0) * sin(inUV.y * PI);cubmapTexCoords.y = -cos(inUV.y * PI);cubmapTexCoords.z = -sin(inUV.x * PI * 2.0) * sin(inUV.y * PI);return textureCube(cubemap, cubmapTexCoords);}void main( void ){gl_FragColor = cubeToLatLon(tCube, outUV);}'
 
-				// } );
+				} );
 
-				var textureLoader = new THREE.TextureLoader();
-				var envMap = loadRefTexture(textureLoader,path+'envMap.jpg');
+// 				var textureLoader = new THREE.TextureLoader();
+// 				var envMap = loadRefTexture(textureLoader,path+'envMap.jpg');
 
 				
 
-				 var materialBkg = new THREE.MeshPhongMaterial({map:envMap});
+// 				 var materialBkg = new THREE.MeshPhongMaterial({map:envMap});
 				var loaderEnv = new THREE.BinaryLoader()
 				 .load(path+"/environment.js",function(geometry){
 					
@@ -203,8 +203,8 @@
 				
 				
 				var bodyMap = new THREE.TextureLoader().load(srcUrl+"GTR_body1.png");
-				var bodyReflMap = new THREE.TextureLoader().load(srcUrl+"92581108.png");
-				bodyReflMap.mapping = THREE.SphericalReflectionMapping;
+				//var bodyReflMap = new THREE.TextureLoader().load(srcUrl+"92581108.png");
+				//bodyReflMap.mapping = THREE.SphericalReflectionMapping;
 				
 				var insideMap = new THREE.TextureLoader().load(srcUrl+"GTR_inside1.png");
 				var insideBumpMap = new THREE.TextureLoader().load(srcUrl+"Map__91.png");
